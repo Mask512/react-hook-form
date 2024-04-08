@@ -1,0 +1,15 @@
+.youtube-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+input {
+    margin-block: 1em;
+}
+
+button {
+    padding: .5em 1em;
+    border-radius: 5px;
+    border: 1px solid transparent;
+}
