@@ -1,16 +1,29 @@
 import './styles.css';
 import { useForm } from 'react-hook-form';
-import { DevTool } from '@hookform/devtools'
+import { DevTool } from '@hookform/devtools';
+
+let renderCount = 0;
+
+type FormValues = {
+  username: string;
+  email: string;
+  channel: string;
+};
 
 export const YoutubeForm = () => {
-  const form = useForm();
-  const { register, control } = form;
-
+  const form = useForm<FormValues>();
+  const { register, control, handleSubmit } = form;
   // const { name, ref, onChange, onBlur } = register('username');
 
+  const onSubmit = (data: FormValues) => {
+    console.log('form submitted', data);
+  };
+
+  renderCount++;
   return (
     <div className="youtube-form">
-      <form>
+      <h1>Youtube Form {renderCount / 2}</h1>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <label htmlFor="username">Username</label>
         <input
           type="text"
