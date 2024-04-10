@@ -23,7 +23,7 @@ export const YoutubeForm = () => {
   return (
     <div className="youtube-form">
       <h1>Youtube Form {renderCount / 2}</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <label htmlFor="username">Username</label>
         <input
           type="text"
@@ -32,10 +32,21 @@ export const YoutubeForm = () => {
           // ref={ref}
           // onChange={onChange}
           // onBlur={onBlur}
-          {...register('username')}
+          {...register('username', {
+            required: 'username is required',
+          })}
         />
         <label htmlFor="email">Email</label>
-        <input type="email" id="email" {...register('email')} />
+        <input
+          type="email"
+          id="email"
+          {...register('email', {
+            pattern: {
+              value: /^[a-z]/,
+              message: 'Invalid email format',
+            },
+          })}
+        />
         <label htmlFor="channel">Channel</label>
         <input type="text" id="channel" {...register('channel')} />
         <button>Submit</button>
