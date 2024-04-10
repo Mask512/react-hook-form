@@ -8,10 +8,24 @@ type FormValues = {
   username: string;
   email: string;
   channel: string;
+  social: {
+    facebook: string;
+    twitter: string;
+  };
 };
 
 export const YoutubeForm = () => {
-  const form = useForm<FormValues>();
+  const form = useForm<FormValues>({
+    defaultValues: {
+      username: 'Batman',
+      email: '',
+      channel: '',
+      social: {
+        facebook: '',
+        twitter: '',
+      },
+    },
+  });
   const { register, control, handleSubmit, formState } = form;
   // const { name, ref, onChange, onBlur } = register('username');
 
@@ -77,6 +91,10 @@ export const YoutubeForm = () => {
           })}
         />
         <p>{errors.channel?.message}</p>
+        <label htmlFor="facebook">Facebook</label>
+        <input type="text" id="facebook" {...register('social.facebook')} />
+        <label htmlFor="twitter">Twitter</label>
+        <input type="text" id="twitter" {...register('social.twitter')} />
         <button>Submit</button>
       </form>
       <DevTool control={control} />
