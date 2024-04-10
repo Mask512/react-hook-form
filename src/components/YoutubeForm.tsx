@@ -48,6 +48,20 @@ export const YoutubeForm = () => {
               value: /^[a-z]/,
               message: 'Invalid email format',
             },
+            validate: {
+              notAdmin: (fieldValue) => {
+                return (
+                  fieldValue !== 'admin@example.com' ||
+                  'This email is not allowed'
+                );
+              },
+              blacklistedDomain: (fieldValue) => {
+                return (
+                  !fieldValue.endsWith('baddomain.com') ||
+                  'This domain is not allowed'
+                );
+              },
+            },
           })}
         />
         <p>{errors.email?.message}</p>
