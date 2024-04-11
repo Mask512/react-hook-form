@@ -12,18 +12,20 @@ type FormValues = {
     facebook: string;
     twitter: string;
   };
+  phoneNumbers: string[];
 };
 
 export const YoutubeForm = () => {
   const form = useForm<FormValues>({
     defaultValues: {
       username: 'Batman',
-      email: '',
-      channel: '',
+      email: 'asd@gmail.com',
+      channel: '@mask512',
       social: {
         facebook: '',
         twitter: '',
       },
+      phoneNumbers: ['', ''],
     },
   });
   const { register, control, handleSubmit, formState } = form;
@@ -95,6 +97,29 @@ export const YoutubeForm = () => {
         <input type="text" id="facebook" {...register('social.facebook')} />
         <label htmlFor="twitter">Twitter</label>
         <input type="text" id="twitter" {...register('social.twitter')} />
+
+        <label htmlFor="primary-phone">Primary Phone Number</label>
+        <input
+          type="text"
+          id="primary-phone"
+          {...register('phoneNumbers.0', {
+            pattern: {
+              value: /\d+/,
+              message: 'Only input number',
+            },
+          })}
+        />
+        
+        {errors.phoneNumbers && errors.phoneNumbers[0] && (
+          <p>{errors.phoneNumbers[0].message}</p>
+        )}
+
+        <label htmlFor="secondary-phone">Secondary Phone Number</label>
+        <input
+          type="text"
+          id="secondary-phone"
+          {...register('phoneNumbers.1')}
+        />
         <button>Submit</button>
       </form>
       <DevTool control={control} />
