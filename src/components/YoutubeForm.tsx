@@ -1,5 +1,5 @@
 import './styles.css';
-import { useForm } from 'react-hook-form';
+import { useForm, useFieldArray } from 'react-hook-form';
 import { DevTool } from '@hookform/devtools';
 
 let renderCount = 0;
@@ -13,6 +13,9 @@ type FormValues = {
     twitter: string;
   };
   phoneNumbers: string[];
+  phNumbers: {
+    number: string;
+  }[];
 };
 
 export const YoutubeForm = () => {
@@ -26,10 +29,20 @@ export const YoutubeForm = () => {
         twitter: '',
       },
       phoneNumbers: ['', ''],
+      phNumbers: [
+        {
+          number: '',
+        },
+      ],
     },
   });
   const { register, control, handleSubmit, formState } = form;
   // const { name, ref, onChange, onBlur } = register('username');
+
+  const { fields, append, remove } = useFieldArray({
+    name: 'phNumbers',
+    control,
+  });
 
   const { errors } = formState;
 
@@ -109,7 +122,7 @@ export const YoutubeForm = () => {
             },
           })}
         />
-        
+
         {errors.phoneNumbers && errors.phoneNumbers[0] && (
           <p>{errors.phoneNumbers[0].message}</p>
         )}
@@ -120,6 +133,29 @@ export const YoutubeForm = () => {
           id="secondary-phone"
           {...register('phoneNumbers.1')}
         />
+        <div>
+          <label htmlFor="">List of phone Numbers</label>
+          <div>
+            {fields.map((field, index) => {
+              return (
+                <div className="form-control" key={field.id}>
+                  <input
+                    type="text"
+                    {...register(`phNumbers.${index}.number` as const)}
+                  />
+                  {index > 0 && (
+                    <button type="button" onClick={() => remove(index)}>
+                      Remove phone numbers
+                    </button>
+                  )}
+                </div>
+              );
+            })}
+            <button type="button" onClick={() => append({ number: '' })}>
+              Add phone numbers
+            </button>
+          </div>
+        </div>
         <button>Submit</button>
       </form>
       <DevTool control={control} />
