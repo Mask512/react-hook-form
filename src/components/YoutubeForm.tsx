@@ -40,7 +40,7 @@ export const YoutubeForm = () => {
       dob: new Date(),
     },
   });
-  const { register, control, handleSubmit, formState } = form;
+  const { register, control, handleSubmit, formState, watch } = form;
   // const { name, ref, onChange, onBlur } = register('username');
 
   const { fields, append, remove } = useFieldArray({
@@ -54,10 +54,14 @@ export const YoutubeForm = () => {
     console.log('form submitted', data);
   };
 
+  const watchUsername = watch('username')
+  // const watchUsername = watch(['username', 'email'])
+
   renderCount++;
   return (
     <div className="youtube-form">
       <h1>Youtube Form {renderCount / 2}</h1>
+      <h2>Watched value: {watchUsername}</h2>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <label htmlFor="username">Username</label>
         <input
