@@ -21,6 +21,7 @@ type FormValues = {
 };
 
 export const YoutubeForm = () => {
+  /** init useForm hook & default values */
   const form = useForm<FormValues>({
     defaultValues: {
       username: 'Batman',
@@ -40,28 +41,40 @@ export const YoutubeForm = () => {
       dob: new Date(),
     },
   });
-  const { register, control, handleSubmit, formState, watch } = form;
-  // const { name, ref, onChange, onBlur } = register('username');
 
+  const { register, control, handleSubmit, formState, watch, getValues } = form;
+
+  // const { name, ref, onChange, onBlur } = register('username'); // registering form
+
+  /** dynamic fields */
   const { fields, append, remove } = useFieldArray({
     name: 'phNumbers',
     control,
   });
 
+  /** form sate errors */
   const { errors } = formState;
 
   const onSubmit = (data: FormValues) => {
     console.log('form submitted', data);
   };
 
-  const watchUsername = watch('username')
+  const watchUsername = watch('username');
   // const watchUsername = watch(['username', 'email'])
 
+  /** Get values */
+  const handleGetValue = () => {
+    // console.log('Get Values :', getValues()); // all values
+    console.log('Get Values :', getValues('username')); // get specific value
+  };
+
   renderCount++;
+
   return (
     <div className="youtube-form">
       <h1>Youtube Form {renderCount / 2}</h1>
-      <h2>Watched value: {watchUsername}</h2>
+      <h2>Watched value: {watchUsername}</h2>{' '}
+      {/* watch fields trigger re render */}
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <label htmlFor="username">Username</label>
         <input
@@ -179,7 +192,6 @@ export const YoutubeForm = () => {
         />
         <p>{errors.age?.message}</p>
 
-
         <label htmlFor="dob">Date of Birth</label>
         <input
           type="date"
@@ -192,9 +204,12 @@ export const YoutubeForm = () => {
             },
           })}
         />
-         <p>{errors.dob?.message}</p>
+        <p>{errors.dob?.message}</p>
 
         <button>Submit</button>
+        <button onClick={handleGetValue} type="button">
+          Get Value
+        </button>
       </form>
       <DevTool control={control} />
     </div>
