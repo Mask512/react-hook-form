@@ -16,6 +16,8 @@ type FormValues = {
   phNumbers: {
     number: string;
   }[];
+  age: number;
+  dob: Date;
 };
 
 export const YoutubeForm = () => {
@@ -34,6 +36,8 @@ export const YoutubeForm = () => {
           number: '',
         },
       ],
+      age: 0,
+      dob: new Date(),
     },
   });
   const { register, control, handleSubmit, formState } = form;
@@ -134,7 +138,7 @@ export const YoutubeForm = () => {
           {...register('phoneNumbers.1')}
         />
         <div>
-          <label htmlFor="">List of phone Numbers</label>
+          <label>List of phone Numbers</label>
           <div>
             {fields.map((field, index) => {
               return (
@@ -156,6 +160,36 @@ export const YoutubeForm = () => {
             </button>
           </div>
         </div>
+
+        <label htmlFor="age">Age</label>
+        <input
+          type="text"
+          id="age"
+          {...register('age', {
+            valueAsNumber: true, // parse to number
+            required: {
+              value: true,
+              message: 'Age is required',
+            },
+          })}
+        />
+        <p>{errors.age?.message}</p>
+
+
+        <label htmlFor="dob">Date of Birth</label>
+        <input
+          type="date"
+          id="dob"
+          {...register('dob', {
+            valueAsDate: true, // parse to number
+            required: {
+              value: true,
+              message: 'Age is required',
+            },
+          })}
+        />
+         <p>{errors.dob?.message}</p>
+
         <button>Submit</button>
       </form>
       <DevTool control={control} />
