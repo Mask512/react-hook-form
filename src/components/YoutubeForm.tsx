@@ -42,7 +42,15 @@ export const YoutubeForm = () => {
     },
   });
 
-  const { register, control, handleSubmit, formState, watch, getValues } = form;
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState,
+    watch,
+    getValues,
+    setValue,
+  } = form;
 
   // const { name, ref, onChange, onBlur } = register('username'); // registering form
 
@@ -66,6 +74,15 @@ export const YoutubeForm = () => {
   const handleGetValue = () => {
     // console.log('Get Values :', getValues()); // all values
     console.log('Get Values :', getValues('username')); // get specific value
+  };
+
+  /** Set values */
+  const handleSetValue = () => {
+    // setValue('username', 'BruceWyn');
+    setValue('username', 'BruceWyn', {
+      shouldDirty: true,
+      shouldTouch: true,
+    });
   };
 
   renderCount++;
@@ -209,6 +226,9 @@ export const YoutubeForm = () => {
         <button>Submit</button>
         <button onClick={handleGetValue} type="button">
           Get Value
+        </button>
+        <button onClick={handleSetValue} type="button">
+          Set Value
         </button>
       </form>
       <DevTool control={control} />
