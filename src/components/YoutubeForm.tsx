@@ -60,8 +60,14 @@ export const YoutubeForm = () => {
     control,
   });
 
-  /** form sate errors */
-  const { errors } = formState;
+  /** form state */
+  const { errors, dirtyFields, touchedFields, isDirty } = formState;
+
+  console.log({
+    dirtyFields,
+    touchedFields,
+    isDirty,
+  });
 
   const onSubmit = (data: FormValues) => {
     console.log('form submitted', data);
@@ -80,8 +86,8 @@ export const YoutubeForm = () => {
   const handleSetValue = () => {
     // setValue('username', 'BruceWyn');
     setValue('username', 'BruceWyn', {
-      shouldDirty: true,
-      shouldTouch: true,
+      shouldDirty: true, // dirty state = is field modified or not
+      shouldTouch: true, // touch state = is field have been interacted or not
     });
   };
 
@@ -145,7 +151,14 @@ export const YoutubeForm = () => {
         />
         <p>{errors.channel?.message}</p>
         <label htmlFor="facebook">Facebook</label>
-        <input type="text" id="facebook" {...register('social.facebook')} />
+        <input
+          type="text"
+          id="facebook"
+          {...register('social.facebook', {
+            disabled: watch('channel') === '',
+            required: 'Enter facebook id',
+          })}
+        />
         <label htmlFor="twitter">Twitter</label>
         <input type="text" id="twitter" {...register('social.twitter')} />
 
