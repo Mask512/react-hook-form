@@ -61,12 +61,22 @@ export const YoutubeForm = () => {
   });
 
   /** form state */
-  const { errors, dirtyFields, touchedFields, isDirty } = formState;
+  const {
+    errors,
+    //  dirtyFields,
+    //  touchedFields,
+    // isDirty,
+    isSubmitting,
+    isSubmitted,
+    submitCount,
+    isSubmitSuccessful,
+  } = formState;
 
   console.log({
-    dirtyFields,
-    touchedFields,
-    isDirty,
+    isSubmitting, // when submitting true , after submit false again
+    isSubmitted, // after submitting whether success or not
+    submitCount,
+    isSubmitSuccessful,
   });
 
   const onSubmit = (data: FormValues) => {
@@ -236,7 +246,7 @@ export const YoutubeForm = () => {
         />
         <p>{errors.dob?.message}</p>
 
-        <button>Submit</button>
+        <button disabled={isSubmitting}>Submit</button>
         <button onClick={handleGetValue} type="button">
           Get Value
         </button>
