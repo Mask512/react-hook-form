@@ -20,13 +20,15 @@ const defaultValues = {
       number: '',
     },
   ],
-  age: 0,
+  age: 2,
   dob: new Date(),
 };
 
 export const YoutubeForm = () => {
   /** init useForm hook & default values */
-  const form = useForm<FormValues>({ defaultValues });
+  const form = useForm<FormValues>({ defaultValues,
+    mode: 'onBlur'
+  });
 
   const {
     register,
@@ -136,6 +138,13 @@ export const YoutubeForm = () => {
                   !fieldValue.endsWith('baddomain.com') ||
                   'This domain is not allowed'
                 );
+              },
+              emailAvailable: async (fieldValue) => {
+                const response = await fetch(
+                  `https://jsonplaceholder.typicode.com/users?email=${fieldValue}`,
+                );
+                const data = await response.json();
+                return data.length == 0 || 'Email already exist';
               },
             },
           })}
