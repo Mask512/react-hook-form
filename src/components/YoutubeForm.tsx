@@ -1,46 +1,32 @@
 import './styles.css';
+import { FormValues } from './types';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { DevTool } from '@hookform/devtools';
+import { useEffect } from 'react';
 
 let renderCount = 0;
 
-type FormValues = {
-  username: string;
-  email: string;
-  channel: string;
+const defaultValues = {
+  username: 'Batman',
+  email: 'asd@gmail.com',
+  channel: '@mask512',
   social: {
-    facebook: string;
-    twitter: string;
-  };
-  phoneNumbers: string[];
-  phNumbers: {
-    number: string;
-  }[];
-  age: number;
-  dob: Date;
+    facebook: '',
+    twitter: '',
+  },
+  phoneNumbers: ['', ''],
+  phNumbers: [
+    {
+      number: '',
+    },
+  ],
+  age: 0,
+  dob: new Date(),
 };
 
 export const YoutubeForm = () => {
   /** init useForm hook & default values */
-  const form = useForm<FormValues>({
-    defaultValues: {
-      username: 'Batman',
-      email: 'asd@gmail.com',
-      channel: '@mask512',
-      social: {
-        facebook: '',
-        twitter: '',
-      },
-      phoneNumbers: ['', ''],
-      phNumbers: [
-        {
-          number: '',
-        },
-      ],
-      age: 0,
-      dob: new Date(),
-    },
-  });
+  const form = useForm<FormValues>({ defaultValues });
 
   const {
     register,
@@ -50,6 +36,7 @@ export const YoutubeForm = () => {
     watch,
     getValues,
     setValue,
+    reset,
   } = form;
 
   // const { name, ref, onChange, onBlur } = register('username'); // registering form
@@ -67,17 +54,17 @@ export const YoutubeForm = () => {
     //  touchedFields,
     // isDirty,
     isSubmitting,
-    isSubmitted,
-    submitCount,
+    // isSubmitted,
+    // submitCount,
     isSubmitSuccessful,
   } = formState;
 
-  console.log({
-    isSubmitting, // when submitting true , after submit false again
-    isSubmitted, // after submitting whether success or not
-    submitCount,
-    isSubmitSuccessful,
-  });
+  // console.log({
+  //   isSubmitting, // when submitting true , after submit false again
+  //   isSubmitted, // after submitting whether success or not
+  //   submitCount,
+  //   isSubmitSuccessful,
+  // });
 
   const onSubmit = (data: FormValues) => {
     console.log('form submitted', data);
@@ -100,6 +87,12 @@ export const YoutubeForm = () => {
       shouldTouch: true, // touch state = is field have been interacted or not
     });
   };
+
+  // reset field
+
+  useEffect(() => {
+    if (isSubmitSuccessful) reset();
+  }, [isSubmitSuccessful, reset]);
 
   renderCount++;
 
@@ -252,6 +245,9 @@ export const YoutubeForm = () => {
         </button>
         <button onClick={handleSetValue} type="button">
           Set Value
+        </button>
+        <button onClick={() => reset()} type="button">
+          Reset
         </button>
       </form>
       <DevTool control={control} />
